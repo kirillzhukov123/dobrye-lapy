@@ -1,0 +1,55 @@
+/* Стили главной страницы. Цвета и размеры взял из макета в Figma */
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    background-color: #fdf7f0;
+    color: #2b1d16;
+}
+
+a {
+    color: #ad4a1a;
+    text-decoration: none;
+}
+
+/* ---------- шапка ---------- */
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 14px 24px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eadfd4;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #2b1d16;
+}
+
+.brand-logo {
+    width: 34px;
+    height: 34px;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.nav-link {
+    font-size: 16px;
+}
+
+.nav-link-enter {
+    font-weight: bold;
+}
