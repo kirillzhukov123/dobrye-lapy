@@ -132,3 +132,95 @@ a {
     margin: 6px 0 0 0;
     color: #6b5748;
 }
+
+/* ---------- карточки питомцев ---------- */
+
+.section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.section-title {
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.section-link {
+    font-weight: bold;
+}
+
+.pets-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.pet-card {
+    display: block;
+    padding: 14px;
+    background-color: #ffffff;
+    border: 1px solid #eadfd4;
+    border-radius: 12px;
+    color: #2b1d16;
+}
+
+.pet-photo {
+    height: 200px;
+    margin-bottom: 10px;
+    background-color: #eeeeee;
+    border-radius: 8px;
+}
+
+.card-title {
+    margin: 4px 0;
+    font-size: 20px;
+}
+
+.card-desc {
+    margin-bottom: 12px;
+    font-size: 15px;
+}
+
+.status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.status-ready {
+    background-color: #dff3e4;
+    color: #235c33;
+}
+
+.status-reserved {
+    background-color: #e0e8ff;
+    color: #2a3d8a;
+}
+
+/* ---------- адаптив ---------- */
+/* TODO: доделать под телефон, пока только шапка и отступы */
+
+@media (max-width: 768px) {
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .nav-menu {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .main-content {
+        padding: 16px;
+    }
+
+    .hero-title {
+        font-size: 24px;
+    }
+}
