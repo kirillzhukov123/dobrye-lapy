@@ -2,6 +2,8 @@
 
 Сайт городского приюта для собак и кошек. Проект на Django.
 
+Сайт: https://kirillzhukov123.github.io/dobrye-lapy/
+
 ## Что сделано
 
 - проект Django и приложение `app`
