@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Добрые лапы{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<header class="topbar">
+    <a href="{% url 'index' %}" class="brand">
+        <img src="{% static 'images/logo.png' %}" alt="Логотип приюта «Добрые лапы»" class="brand-logo">
+        <span>Добрые лапы</span>
+    </a>
+    <nav class="nav-menu">
+        <a href="{% url 'about' %}" class="nav-link">О приюте</a>
+        <a href="{% url 'login' %}" class="nav-link">Войти</a>
+        <a href="{% url 'register' %}" class="btn-small">Регистрация</a>
+    </nav>
+</header>
+
+<main class="main-content">
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="footer">
+    <div class="footer-inner">
+        <div>
+            <p class="footer-title">Добрые лапы</p>
+            <p class="footer-text">Городской приют для собак и кошек. Работаем с 2016 года.</p>
+        </div>
+        <div>
+            <p class="footer-text">г. Ульяновск, ул. Лесная, 12</p>
+            <p class="footer-text">Ежедневно с 09:00 до 19:00</p>
+            <p class="footer-text">+7 (900) 000-00-00</p>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
