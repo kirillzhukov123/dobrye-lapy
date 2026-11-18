@@ -95,8 +95,11 @@ class Command(BaseCommand):
             ("Тимка", "dog", "Метис", 12, "home", None, "Уехал в новую семью."),
             ("Ася", "cat", "Метис", 10, "home", None, "Уехала в новую семью."),
         ]
-        photos = ["pets/dog1.jpg", "pets/dog2.jpg", "pets/dog3.jpg", "pets/dog4.jpg", "pets/dog5.jpg",
-                  "pets/cat1.jpg", "pets/cat2.jpg", "pets/cat3.jpg", "pets/cat4.jpg", "pets/cat5.jpg"]
+        photos = {
+            "dog": ["pets/dog1.jpg", "pets/dog2.jpg", "pets/dog3.jpg", "pets/dog4.jpg", "pets/dog5.jpg"],
+            "cat": ["pets/cat1.jpg", "pets/cat2.jpg", "pets/cat3.jpg", "pets/cat4.jpg", "pets/cat5.jpg"],
+        }
+        photo_index = {"dog": 0, "cat": 0}
         for idx, (name, species, breed, age, status, enc, character) in enumerate(pets_data):
             pet, created = Pet.objects.get_or_create(name=name)
             pet.species = species
@@ -107,7 +110,8 @@ class Command(BaseCommand):
             pet.rescue_story = STORY.get(name, "")
             pet.enclosure = Enclosure.objects.get(number=str(enc)) if enc else None
             if created:
-                pet.photo = photos[idx % len(photos)]
+                pet.photo = photos[species][photo_index[species] % 5]
+            photo_index[species] += 1
             pet.save()
             VetCard.objects.get_or_create(
                 pet=pet, defaults={"vaccinations": VACC.get(name, "Вакцинация по графику.")})

@@ -245,7 +245,7 @@
     "rescue_story": "Нашли в подъезде, была в запущенном состоянии.",
     "status": "ready",
     "enclosure": 7,
-    "photo": "pets/dog2.jpg"
+    "photo": "pets/cat5.jpg"
   }
 },
 {
@@ -260,7 +260,7 @@
     "rescue_story": "Бежал за хозяином и сбился с дороги.",
     "status": "ready",
     "enclosure": 8,
-    "photo": "pets/dog3.jpg"
+    "photo": "pets/dog2.jpg"
   }
 },
 {
@@ -275,7 +275,7 @@
     "rescue_story": "Осталась одна в квартире, прежние хозяева уехали.",
     "status": "ready",
     "enclosure": 9,
-    "photo": "pets/dog4.jpg"
+    "photo": "pets/cat1.jpg"
   }
 },
 {
@@ -290,7 +290,7 @@
     "rescue_story": "Привезли из питомника, когда там не осталось мест.",
     "status": "ready",
     "enclosure": 10,
-    "photo": "pets/dog5.jpg"
+    "photo": "pets/dog3.jpg"
   }
 },
 {
@@ -305,7 +305,7 @@
     "rescue_story": "Подобрали котёнком, выросла в приюте.",
     "status": "ready",
     "enclosure": 11,
-    "photo": "pets/cat1.jpg"
+    "photo": "pets/cat2.jpg"
   }
 },
 {
@@ -320,7 +320,7 @@
     "rescue_story": "Владельцы уехали на дачу и вернуться не смогли.",
     "status": "ready",
     "enclosure": 12,
-    "photo": "pets/cat2.jpg"
+    "photo": "pets/dog4.jpg"
   }
 },
 {
@@ -350,7 +350,7 @@
     "rescue_story": "Забрали из приюта на передержку и не вернули.",
     "status": "reserved",
     "enclosure": 7,
-    "photo": "pets/cat4.jpg"
+    "photo": "pets/dog5.jpg"
   }
 },
 {
@@ -365,7 +365,7 @@
     "rescue_story": "Родственники увезли к себе, но ухаживать не смогли.",
     "status": "reserved",
     "enclosure": 8,
-    "photo": "pets/cat5.jpg"
+    "photo": "pets/cat4.jpg"
   }
 },
 {
@@ -395,7 +395,7 @@
     "rescue_story": "Подобрали с пометом, котят забрали, она осталась.",
     "status": "quarantine",
     "enclosure": 10,
-    "photo": "pets/dog2.jpg"
+    "photo": "pets/cat5.jpg"
   }
 },
 {
@@ -410,7 +410,7 @@
     "rescue_story": "Нашли в подвале, лечим глаза.",
     "status": "treatment",
     "enclosure": 11,
-    "photo": "pets/dog3.jpg"
+    "photo": "pets/cat1.jpg"
   }
 },
 {
@@ -425,7 +425,7 @@
     "rescue_story": "Сбилась с дороги и повредила лапу. Лечим.",
     "status": "treatment",
     "enclosure": 12,
-    "photo": "pets/dog4.jpg"
+    "photo": "pets/dog2.jpg"
   }
 },
 {
@@ -440,7 +440,7 @@
     "rescue_story": "Родственники перестали забирать, живёт у нас.",
     "status": "ready",
     "enclosure": 6,
-    "photo": "pets/dog5.jpg"
+    "photo": "pets/cat2.jpg"
   }
 },
 {
@@ -455,7 +455,7 @@
     "rescue_story": "Подобрали у подъезда, откликнулся на объявление.",
     "status": "ready",
     "enclosure": 7,
-    "photo": "pets/cat1.jpg"
+    "photo": "pets/dog3.jpg"
   }
 },
 {
@@ -470,7 +470,7 @@
     "rescue_story": "Хозяева уехали, кошку оставили передержке.",
     "status": "ready",
     "enclosure": 8,
-    "photo": "pets/cat2.jpg"
+    "photo": "pets/cat3.jpg"
   }
 },
 {
@@ -485,7 +485,7 @@
     "rescue_story": "Был у прежнего хозяина, тот уехал за границу.",
     "status": "ready",
     "enclosure": 9,
-    "photo": "pets/cat3.jpg"
+    "photo": "pets/dog4.jpg"
   }
 },
 {
@@ -515,7 +515,7 @@
     "rescue_story": "Оставили в коробке у подъезда.",
     "status": "ready",
     "enclosure": 11,
-    "photo": "pets/cat5.jpg"
+    "photo": "pets/dog5.jpg"
   }
 },
 {
@@ -530,7 +530,7 @@
     "rescue_story": "Отдали, когда в семье появился ребёнок.",
     "status": "ready",
     "enclosure": 12,
-    "photo": "pets/dog1.jpg"
+    "photo": "pets/cat5.jpg"
   }
 },
 {
@@ -545,7 +545,7 @@
     "rescue_story": "Уехал в новую семью.",
     "status": "home",
     "enclosure": null,
-    "photo": "pets/dog2.jpg"
+    "photo": "pets/dog1.jpg"
   }
 },
 {
@@ -560,7 +560,7 @@
     "rescue_story": "Уехала в новую семью.",
     "status": "home",
     "enclosure": null,
-    "photo": "pets/dog3.jpg"
+    "photo": "pets/cat1.jpg"
   }
 },
 {
@@ -575,7 +575,7 @@
     "rescue_story": "Уехал в новую семью.",
     "status": "home",
     "enclosure": null,
-    "photo": "pets/dog4.jpg"
+    "photo": "pets/dog2.jpg"
   }
 },
 {
@@ -590,7 +590,7 @@
     "rescue_story": "Уехала в новую семью.",
     "status": "home",
     "enclosure": null,
-    "photo": "pets/dog5.jpg"
+    "photo": "pets/cat2.jpg"
   }
 },
 {
