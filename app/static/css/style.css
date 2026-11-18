@@ -123,6 +123,7 @@ a {
 .pets-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    align-items: start;
     gap: 20px;
 }
 
@@ -137,11 +138,12 @@ a {
 
 .card-image {
     width: 100%;
-    height: 200px;
-    object-fit: cover;
+    height: 220px;
+    object-fit: contain;
+    display: block;
     border-radius: 8px;
     margin-bottom: 10px;
-    background-color: #eeeeee;
+    background-color: #ffffff;
 }
 
 .card-title {
@@ -241,8 +243,8 @@ a {
     width: 100%;
     border-radius: 12px;
     max-height: 500px;
-    object-fit: cover;
-    background-color: #eeeeee;
+    object-fit: contain;
+    background-color: #ffffff;
 }
 
 .detail-title {
@@ -784,7 +786,6 @@ a {
     width: 100%;
     height: 2px;
     background-color: #2b1d16;
-    transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .burger-open span:nth-child(1) {
@@ -934,6 +935,11 @@ textarea:focus-visible {
 @media (max-width: 560px) {
     .pets-grid-home {
         grid-template-columns: 1fr;
+    }
+
+    .card-image {
+        height: auto;
+        aspect-ratio: auto;
     }
 }
 
