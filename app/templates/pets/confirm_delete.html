@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Удаление питомца{% endblock %}
+{% block content %}
+<a href="{% url 'pet_detail' pet.pk %}" class="back-link">Назад к карточке</a>
+<h1 class="page-title">Удалить питомца?</h1>
+
+<div class="form-card">
+    <p class="info-text">Вы собираетесь удалить карточку «{{ pet.name }}». Вместе с ней удалятся анкеты, прогулки и ветеринарная карточка. Действие нельзя отменить.</p>
+    <form method="post" class="form-actions">
+        {% csrf_token %}
+        <button type="submit" class="btn-danger">Удалить</button>
+        <a href="{% url 'pet_detail' pet.pk %}" class="btn-outline">Отмена</a>
+    </form>
+</div>
+{% endblock %}

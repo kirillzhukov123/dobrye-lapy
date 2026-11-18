@@ -4,31 +4,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Добрые лапы{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>{% block title %}Приют «Добрые лапы»{% endblock %}</title>
+    <meta name="description" content="Городской приют для собак и кошек: карточки животных, история спасения, анкета на усыновление, гостевые прогулки и опекунство.">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=3">
 </head>
 <body>
 <header class="topbar">
     <a href="{% url 'index' %}" class="brand">
-        <img src="{% static 'images/logo.png' %}" alt="Логотип приюта «Добрые лапы»" class="brand-logo">
-        <span>Добрые лапы</span>
+        <img src="{% static 'images/logo.png' %}" alt="Логотип приюта" class="brand-logo" width="34" height="34">
+        <span>Приют «Добрые лапы»</span>
     </a>
-    <nav class="nav-menu">
+    <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="main-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <nav class="nav-menu" id="main-nav">
+        <a href="{% url 'pet_list' %}" class="nav-link">Каталог</a>
+        <a href="{% url 'search' %}" class="nav-link">Поиск</a>
+        <a href="{% url 'guardianship' %}" class="nav-link">Опекунство</a>
         <a href="{% url 'about' %}" class="nav-link">О приюте</a>
-        <a href="{% url 'login' %}" class="nav-link">Войти</a>
-        <a href="{% url 'register' %}" class="btn-small">Регистрация</a>
+        {% if user.is_authenticated %}
+            {% if user.is_staff %}
+                <a href="{% url 'application_list' %}" class="nav-link">Заявки</a>
+                <a href="{% url 'pet_create' %}" class="nav-link">Добавить питомца</a>
+            {% endif %}
+            <a href="{% url 'profile' %}" class="nav-link">Личный кабинет</a>
+            <span class="user-name">{{ user.username }}</span>
+            <form method="post" action="{% url 'logout' %}" class="logout-form">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">Выйти</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}" class="nav-link">Войти</a>
+            <a href="{% url 'register' %}" class="btn-small">Регистрация</a>
+        {% endif %}
     </nav>
 </header>
 
 <main class="main-content">
+    {% for m in messages %}
+        <div class="flash {{ m.tags }}">{{ m }}</div>
+    {% endfor %}
+
     {% block content %}{% endblock %}
 </main>
 
 <footer class="footer">
     <div class="footer-inner">
         <div>
-            <p class="footer-title">Добрые лапы</p>
-            <p class="footer-text">Городской приют для собак и кошек. Работаем с 2016 года.</p>
+            <p class="footer-title">Приют «Добрые лапы»</p>
+            <p class="footer-text">Помогаем собакам и кошкам найти новый дом с 2016 года.</p>
         </div>
         <div>
             <p class="footer-text">г. Ульяновск, ул. Лесная, 12</p>
@@ -37,5 +63,6 @@
         </div>
     </div>
 </footer>
+<script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>

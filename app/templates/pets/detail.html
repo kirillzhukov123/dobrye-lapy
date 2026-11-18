@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ pet.name }}{% endblock %}
+{% block content %}
+<a href="{% url 'pet_list' %}" class="back-link">Назад в каталог</a>
+
+<article class="pet-detail">
+    <div class="detail-image-wrapper">
+        {% if pet.photo %}
+            <img src="{{ pet.photo.url }}" alt="{{ pet.name }}" class="detail-image" width="800" height="600" decoding="async">
+        {% else %}
+            <img src="{% static 'images/placeholder.jpg' %}" alt="Фото питомца" class="detail-image" width="800" height="600" decoding="async">
+        {% endif %}
+    </div>
+
+    <div class="detail-info">
+        <div class="detail-title-row">
+            <h1 class="detail-title">{{ pet.name }}</h1>
+            <span class="status-badge {{ pet.status }}">{{ pet.get_status_display }}</span>
+        </div>
+
+        <p class="detail-params">
+            Вид: {{ pet.get_species_display }} |
+            Порода: {{ pet.breed|default:"не указана" }} |
+            Возраст: {{ pet.age_display }} |
+            Вольер: {% if pet.enclosure %}{{ pet.enclosure.number }}{% else %}не указан{% endif %}
+        </p>
+
+        <h3 class="info-title">Характер</h3>
+        <p class="info-text">{{ pet.character|default:"Не указан" }}</p>
+
+        <h3 class="info-title">История спасения</h3>
+        <p class="info-text">{{ pet.rescue_story|default:"Не указана" }}</p>
+
+        {% if vet_card %}
+            <h3 class="info-title">Ветеринарная карточка</h3>
+            <p class="info-text">{{ vet_card.vaccinations|default:"Прививки не указаны" }}</p>
+        {% endif %}
+
+        {% if user.is_staff or user.is_superuser %}
+            <div class="detail-actions">
+                <a href="{% url 'pet_edit' pet.pk %}" class="btn-secondary">Редактировать</a>
+                <a href="{% url 'pet_delete' pet.pk %}" class="btn-danger">Удалить</a>
+                <a href="{% url 'application_list' %}?pet={{ pet.pk }}" class="btn-outline">Анкеты питомца</a>
+            </div>
+        {% endif %}
+
+        <hr class="divider">
+
+        <h2 class="section-title">Усыновление</h2>
+        {% if user_application %}
+            <p class="notice-box">Вы уже подали анкету. Статус: {{ user_application.get_status_display }}.</p>
+        {% elif not user.is_authenticated %}
+            <p class="notice-box">Чтобы подать анкету, <a href="{% url 'login' %}?next={{ request.path }}">войдите</a> или <a href="{% url 'register' %}">зарегистрируйтесь</a>.</p>
+        {% elif can_apply %}
+            <form method="post" action="{% url 'apply_adoption' pet.pk %}" class="action-form">
+                {% csrf_token %}
+                <label class="form-label" for="id_message">Расскажите о себе</label>
+                <textarea name="message" id="id_message" rows="4" required class="form-textarea" placeholder="Почему вы хотите забрать питомца домой и какие условия можете создать?"></textarea>
+                <button class="btn-primary" type="submit">Подать анкету на усыновление</button>
+            </form>
+        {% else %}
+            <p class="warning-text">Подача анкеты недоступна. Текущий статус: {{ pet.get_status_display }}.</p>
+        {% endif %}
+
+        <h2 class="section-title section-space">Гостевая прогулка</h2>
+        {% if not user.is_authenticated %}
+            <p class="notice-box">Записаться на прогулку можно после <a href="{% url 'login' %}?next={{ request.path }}">входа</a>.</p>
+        {% elif can_walk %}
+            <form method="post" action="{% url 'book_walk' pet.pk %}" class="action-form">
+                {% csrf_token %}
+                <label class="form-label" for="id_when">Дата и время прогулки</label>
+                <input type="datetime-local" name="when" id="id_when" required class="form-input">
+                <button class="btn-secondary" type="submit">Записаться на прогулку</button>
+            </form>
+        {% else %}
+            <p class="warning-text">Запись на прогулку недоступна: питомец на карантине, лечении или уже дома.</p>
+        {% endif %}
+    </div>
+</article>
+{% endblock %}

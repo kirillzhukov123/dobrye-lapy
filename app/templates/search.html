@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Результаты поиска{% endblock %}
+{% block content %}
+<div class="page-head">
+    <div>
+        <h1 class="page-title">Результаты поиска</h1>
+        <p class="page-subtitle">
+            {% if q %}
+                По запросу «{{ q }}» найдено: {{ total }}.
+            {% else %}
+                Всего питомцев: {{ total }}.
+            {% endif %}
+            Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+        </p>
+    </div>
+</div>
+
+{% include 'pets/_filters.html' with form_action='search' %}
+{% include 'pets/_cards.html' %}
+{% include 'pets/_pagination.html' %}
+{% endblock %}

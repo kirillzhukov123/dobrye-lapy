@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Каталог питомцев{% endblock %}
+{% block content %}
+<div class="page-head">
+    <div>
+        <h1 class="page-title">Каталог питомцев</h1>
+        <p class="page-subtitle">Найдено: {{ total }}. Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.</p>
+    </div>
+    {% if user.is_staff or user.is_superuser %}
+        <a href="{% url 'pet_create' %}" class="btn-primary">Добавить питомца</a>
+    {% endif %}
+</div>
+
+{% include 'pets/_filters.html' with form_action='pet_list' %}
+{% include 'pets/_cards.html' %}
+{% include 'pets/_pagination.html' %}
+{% endblock %}

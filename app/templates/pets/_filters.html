@@ -1,0 +1,26 @@
+<form method="get" action="{% url form_action %}" class="filter-form">
+    <input type="search" name="q" value="{{ q }}" placeholder="Кличка или порода" class="filter-input" aria-label="Кличка или порода">
+
+    <select name="species" class="filter-select" aria-label="Вид животного">
+        <option value="">Все виды</option>
+        {% for code, label in species_choices %}
+            <option value="{{ code }}" {% if species == code %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+
+    <select name="status" class="filter-select" aria-label="Статус">
+        <option value="">Любой статус</option>
+        {% for code, label in status_choices %}
+            <option value="{{ code }}" {% if status == code %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+
+    <select name="sort" class="filter-select" aria-label="Сортировка">
+        <option value="name" {% if sort == 'name' %}selected{% endif %}>По кличке (А-Я)</option>
+        <option value="-name" {% if sort == '-name' %}selected{% endif %}>По кличке (Я-А)</option>
+        <option value="age_months" {% if sort == 'age_months' %}selected{% endif %}>Сначала младше</option>
+        <option value="-age_months" {% if sort == '-age_months' %}selected{% endif %}>Сначала старше</option>
+    </select>
+
+    <button type="submit" class="filter-btn">Найти</button>
+</form>

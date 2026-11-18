@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{% if is_edit %}Редактирование питомца{% else %}Новый питомец{% endif %}{% endblock %}
+{% block content %}
+<a href="{% url 'pet_list' %}" class="back-link">Назад в каталог</a>
+<h1 class="page-title">{% if is_edit %}Редактировать питомца{% else %}Добавить нового питомца{% endif %}</h1>
+
+<div class="form-card">
+    <form method="post" enctype="multipart/form-data" class="stack-form">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="warning-text">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        {% for field in form %}
+            <div class="form-group">
+                <label class="form-label" for="{{ field.id_for_label }}">
+                    {{ field.label }}{% if field.field.required %} *{% endif %}
+                </label>
+                {{ field }}
+                {% if field.help_text %}
+                    <p class="field-help">{{ field.help_text }}</p>
+                {% endif %}
+                {% for error in field.errors %}
+                    <p class="form-error">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        {% if is_edit and pet.photo %}
+            <div class="form-group">
+                <p class="form-label">Текущее фото</p>
+                <img src="{{ pet.photo.url }}" alt="{{ pet.name }}" class="form-preview" width="240" height="160" loading="lazy" decoding="async">
+            </div>
+        {% endif %}
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">Сохранить</button>
+            {% if is_edit %}
+                <a href="{% url 'pet_detail' pet.pk %}" class="btn-outline">Отмена</a>
+            {% else %}
+                <a href="{% url 'pet_list' %}" class="btn-outline">Отмена</a>
+            {% endif %}
+        </div>
+    </form>
+</div>
+{% endblock %}

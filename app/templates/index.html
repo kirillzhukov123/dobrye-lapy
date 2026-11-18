@@ -1,78 +1,71 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Приют «Добрые лапы» - найти друга{% endblock %}
+{% block title %}Приют «Добрые лапы» — найти друга{% endblock %}
 {% block content %}
-<section class="hero">
+<section class="hero-section">
     <h1 class="hero-title">Найди друга — и он найдёт дом</h1>
     <p class="hero-text">Собаки и кошки из городского приюта ждут заботливых хозяев. Посмотрите карточки, узнайте историю спасения и запишитесь на знакомство.</p>
     <div class="hero-actions">
-        <a href="#pets" class="btn-primary">Смотреть каталог</a>
-        <a href="#help" class="btn-outline">Стать опекуном</a>
+        <a class="btn-primary" href="{% url 'pet_list' %}">Смотреть каталог</a>
+        <a class="btn-outline" href="{% url 'guardianship' %}">Стать опекуном</a>
     </div>
 </section>
 
-<section class="stats">
-    <div class="stat">
-        <p class="stat-number">34</p>
-        <p class="stat-label">питомца в приюте</p>
+<section class="stats-grid">
+    <div class="stat-card">
+        <p class="stat-number">{{ stats.total }}</p>
+        <p class="stat-label">питомцев в приюте</p>
     </div>
-    <div class="stat">
-        <p class="stat-number">18</p>
+    <div class="stat-card">
+        <p class="stat-number">{{ stats.ready }}</p>
         <p class="stat-label">готовы к усыновлению</p>
     </div>
-    <div class="stat">
-        <p class="stat-number">26</p>
+    <div class="stat-card">
+        <p class="stat-number">{{ stats.home }}</p>
         <p class="stat-label">нашли новый дом</p>
     </div>
 </section>
 
-<section id="pets" class="section-space">
+<div class="section-head">
     <h2 class="section-title">Сейчас ищут дом</h2>
-    <div class="pets-grid">
-        <article class="pet-card">
-            <img src="{% static 'images/pets/bim.jpg' %}" alt="Пёс Бим" class="card-image">
-            <h3 class="card-title">Бим</h3>
-            <p class="card-desc">Собака, метис, 2 года</p>
-            <span class="status-badge ready">Готов к усыновлению</span>
-        </article>
-        <article class="pet-card">
-            <img src="{% static 'images/pets/murka.jpg' %}" alt="Кошка Мурка" class="card-image">
-            <h3 class="card-title">Мурка</h3>
-            <p class="card-desc">Кошка, беспородная, 1 год</p>
-            <span class="status-badge ready">Готов к усыновлению</span>
-        </article>
-        <article class="pet-card">
-            <img src="{% static 'images/pets/dzhek.jpg' %}" alt="Пёс Джек" class="card-image">
-            <h3 class="card-title">Джек</h3>
-            <p class="card-desc">Собака, овчарка, 4 года</p>
-            <span class="status-badge reserved">Зарезервирован</span>
-        </article>
-        <article class="pet-card">
-            <img src="{% static 'images/pets/laska.jpg' %}" alt="Кошка Ласка" class="card-image">
-            <h3 class="card-title">Ласка</h3>
-            <p class="card-desc">Кошка, беспородная, 3 года</p>
-            <span class="status-badge quarantine">На карантине</span>
-        </article>
-    </div>
-</section>
+    <a href="{% url 'pet_list' %}" class="section-link">Все питомцы</a>
+</div>
 
-<section id="help" class="section-space">
-    <h2 class="section-title">Как помочь приюту</h2>
-    <div class="help-grid">
-        <article class="help-card">
-            <h3 class="help-title">Взять питомца домой</h3>
-            <p class="help-text">Выберите животное в каталоге, заполните анкету и обсудите условия с куратором.</p>
-        </article>
-        <article class="help-card">
-            <h3 class="help-title">Оформить опекунство</h3>
-            <p class="help-text">Регулярный взнос помогает оплачивать корм, лечение и содержание выбранного питомца.</p>
-        </article>
-        <article class="help-card">
-            <h3 class="help-title">Погулять с собакой</h3>
-            <p class="help-text">Запишитесь на гостевую прогулку. Это помогает собакам быстрее привыкнуть к людям.</p>
-        </article>
-    </div>
-</section>
+<div class="pets-grid pets-grid-home">
+    {% for pet in pets %}
+        <a class="pet-card" href="{% url 'pet_detail' pet.pk %}">
+            {% if pet.photo %}
+                <img src="{{ pet.photo.url }}" alt="{{ pet.name }}" class="card-image" width="600" height="400" loading="lazy" decoding="async">
+            {% else %}
+                <img src="{% static 'images/placeholder.jpg' %}" alt="Фото питомца" class="card-image" width="600" height="400" loading="lazy" decoding="async">
+            {% endif %}
+            <h3 class="card-title">{{ pet.name }}</h3>
+            <p class="card-desc">{{ pet.get_species_display }}, {{ pet.breed|default:"порода не указана" }}, {{ pet.age_display }}</p>
+            <span class="status-badge {{ pet.status }}">{{ pet.get_status_display }}</span>
+        </a>
+    {% empty %}
+        <p class="empty-msg">Пока никто не ждёт. Загляните позже.</p>
+    {% endfor %}
+</div>
+
+<h2 class="section-title section-space">Как помочь приюту</h2>
+<div class="help-grid">
+    <article class="help-card">
+        <h3 class="help-title">Взять питомца домой</h3>
+        <p class="help-text">Выберите животное в каталоге, заполните анкету и обсудите условия с куратором.</p>
+        <a href="{% url 'pet_list' %}" class="section-link">Перейти в каталог</a>
+    </article>
+    <article class="help-card">
+        <h3 class="help-title">Оформить опекунство</h3>
+        <p class="help-text">Регулярный взнос помогает оплачивать корм, лечение и содержание выбранного питомца.</p>
+        <a href="{% url 'guardianship' %}" class="section-link">Оформить взнос</a>
+    </article>
+    <article class="help-card">
+        <h3 class="help-title">Погулять с собакой</h3>
+        <p class="help-text">Запишитесь на гостевую прогулку. Это помогает собакам быстрее привыкнуть к людям.</p>
+        <a href="{% url 'pet_list' %}" class="section-link">Выбрать собаку</a>
+    </article>
+</div>
 
 <section class="about-strip">
     <div>
