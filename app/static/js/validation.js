@@ -138,6 +138,11 @@
         }
 
         var maxLength = parseInt(field.getAttribute('data-max'), 10);
+        var minLength = parseInt(field.getAttribute('data-min'), 10);
+        if (minLength && value.length < minLength && rule !== 'text' && rule !== 'number' && rule !== 'password') {
+            showError(field, 'Минимум ' + minLength + ' символов, сейчас ' + value.length + '.');
+            return false;
+        }
         if (maxLength && value.length > maxLength && rule !== 'text') {
             showError(field, 'Не больше ' + maxLength + ' символов.');
             return false;
