@@ -4,7 +4,7 @@
 <div class="page-head">
     <div>
         <h1 class="page-title">Каталог питомцев</h1>
-        <p class="page-subtitle">Найдено: {{ total }}. Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.</p>
+        <p class="page-subtitle">Найдено: <span data-results-count>{{ total }}</span>. Страница <span data-current-page>{{ page_obj.number }}</span> из <span data-total-pages>{{ page_obj.paginator.num_pages }}</span>.</p>
     </div>
     {% if user.is_staff or user.is_superuser %}
         <a href="{% url 'pet_create' %}" class="btn-primary">Добавить питомца</a>
@@ -12,6 +12,17 @@
 </div>
 
 {% include 'pets/_filters.html' with form_action='pet_list' %}
-{% include 'pets/_cards.html' %}
+
+<div class="results" data-results>
+    <div class="loading" data-loading hidden>
+        <span class="spinner" aria-hidden="true"></span>
+        <span>Загружаем питомцев...</span>
+    </div>
+    <div class="results-error" data-results-error hidden>
+        Не удалось загрузить данные. Показываем сохранённый список.
+    </div>
+    {% include 'pets/_cards.html' %}
+</div>
+
 {% include 'pets/_pagination.html' %}
 {% endblock %}

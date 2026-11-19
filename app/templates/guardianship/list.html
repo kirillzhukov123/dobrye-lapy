@@ -13,7 +13,7 @@
         <h2 class="section-title">Оформить взнос</h2>
         <p class="info-text">Выберите питомца, укажите сумму и период. Взнос не передаёт право собственности на животное и не заменяет усыновление.</p>
 
-        <form method="post" class="stack-form">
+        <form method="post" class="stack-form" novalidate data-validate>
             {% csrf_token %}
 
             {% if form.non_field_errors %}

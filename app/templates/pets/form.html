@@ -6,7 +6,7 @@
 <h1 class="page-title">{% if is_edit %}Редактировать питомца{% else %}Добавить нового питомца{% endif %}</h1>
 
 <div class="form-card">
-    <form method="post" enctype="multipart/form-data" class="stack-form">
+    <form method="post" enctype="multipart/form-data" class="stack-form" novalidate data-validate>
         {% csrf_token %}
 
         {% if form.non_field_errors %}

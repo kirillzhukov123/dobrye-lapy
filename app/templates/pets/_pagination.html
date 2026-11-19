@@ -1,17 +1,17 @@
 {% if page_obj.has_other_pages %}
-    <nav class="pagination" aria-label="Страницы">
+    <nav class="pagination" aria-label="Страницы" data-pagination>
         {% if page_obj.has_previous %}
-            <a class="page-link" href="{% querystring page=page_obj.previous_page_number %}">Назад</a>
+            <a class="page-link" href="{% querystring page=page_obj.previous_page_number %}" data-page="{{ page_obj.previous_page_number }}">Назад</a>
         {% endif %}
         {% for num in page_obj.paginator.page_range %}
             {% if num == page_obj.number %}
                 <span class="page-link page-current" aria-current="page">{{ num }}</span>
             {% else %}
-                <a class="page-link" href="{% querystring page=num %}">{{ num }}</a>
+                <a class="page-link" href="{% querystring page=num %}" data-page="{{ num }}">{{ num }}</a>
             {% endif %}
         {% endfor %}
         {% if page_obj.has_next %}
-            <a class="page-link" href="{% querystring page=page_obj.next_page_number %}">Вперёд</a>
+            <a class="page-link" href="{% querystring page=page_obj.next_page_number %}" data-page="{{ page_obj.next_page_number }}">Вперёд</a>
         {% endif %}
     </nav>
 {% endif %}

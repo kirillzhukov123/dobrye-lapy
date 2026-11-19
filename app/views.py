@@ -3,7 +3,10 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.templatetags.static import static
+from django.urls import reverse
 from django.views.decorators.http import require_POST
 
 from .forms import (
@@ -79,22 +82,74 @@ def search(request):
     })
 
 
-def pet_detail(request, pk):
-    pet = get_object_or_404(Pet.objects.select_related('enclosure'), pk=pk)
+def _pet_payload(pet):
+    return {
+        'id': pet.pk,
+        'name': pet.name,
+        'species': pet.species,
+        'species_label': pet.get_species_display(),
+        'breed': pet.breed or 'порода не указана',
+        'age': pet.age_display,
+        'status': pet.status,
+        'status_label': pet.get_status_display(),
+        'enclosure': str(pet.enclosure) if pet.enclosure else 'Вольер не указан',
+        'photo': pet.photo.url if pet.photo else static('images/placeholder.jpg'),
+        'url': reverse('pet_detail', args=[pet.pk]),
+    }
+
+
+def api_pets(request):
+    pets, filters = _filtered_pets(request)
+
+    ids = request.GET.get('ids', '')
+    if ids:
+        id_list = [int(item) for item in ids.split(',') if item.strip().isdigit()]
+        pets = pets.filter(pk__in=id_list)
+
+    if request.GET.get('all') == '1':
+        items = pets
+        total = pets.count()
+        page_number = 1
+        pages = 1
+    else:
+        paginator = Paginator(pets, 20)
+        page_obj = paginator.get_page(request.GET.get('page'))
+        items = page_obj
+        total = paginator.count
+        page_number = page_obj.number
+        pages = paginator.num_pages
+
+    return JsonResponse({
+        'total': total,
+        'page': page_number,
+        'pages': pages,
+        'pets': [_pet_payload(pet) for pet in items],
+    })
+
+
+def _detail_context(request, pet, application_form=None, walk_form=None, open_form=''):
     user_application = None
     if request.user.is_authenticated:
         user_application = pet.applications.filter(
             applicant=request.user, status__in=['new', 'approved'],
         ).first()
 
-    return render(request, 'pets/detail.html', {
+    return {
         'pet': pet,
         'vet_card': getattr(pet, 'vet_card', None),
         'can_apply': can_apply(pet),
         'can_walk': can_book_walk(pet),
         'user_application': user_application,
         'walks': pet.walks.filter(is_done=False).select_related('volunteer')[:5],
-    })
+        'application_form': application_form or ApplicationForm(),
+        'walk_form': walk_form or WalkForm(),
+        'open_form': open_form,
+    }
+
+
+def pet_detail(request, pk):
+    pet = get_object_or_404(Pet.objects.select_related('enclosure'), pk=pk)
+    return render(request, 'pets/detail.html', _detail_context(request, pet))
 
 
 @login_required
@@ -119,10 +174,11 @@ def apply_adoption(request, pk):
         application.applicant = request.user
         application.save()
         messages.success(request, 'Анкета отправлена. Куратор свяжется с вами.')
-    else:
-        messages.error(request, form.errors.get('message', ['Проверьте заполнение анкеты.'])[0])
+        return redirect('pet_detail', pk=pet.pk)
 
-    return redirect('pet_detail', pk=pet.pk)
+    messages.error(request, 'Проверьте анкету: исправьте отмеченные поля.')
+    context = _detail_context(request, pet, application_form=form, open_form='application')
+    return render(request, 'pets/detail.html', context)
 
 
 @login_required
@@ -143,10 +199,11 @@ def book_walk(request, pk):
         booking.volunteer = request.user
         booking.save()
         messages.success(request, 'Запись на прогулку создана.')
-    else:
-        messages.error(request, form.errors.get('when', ['Проверьте дату и время.'])[0])
+        return redirect('pet_detail', pk=pet.pk)
 
-    return redirect('pet_detail', pk=pet.pk)
+    messages.error(request, 'Проверьте дату прогулки: исправьте отмеченные поля.')
+    context = _detail_context(request, pet, walk_form=form, open_form='walk')
+    return render(request, 'pets/detail.html', context)
 
 
 def register(request):

@@ -26,14 +26,14 @@
             Вольер: {% if pet.enclosure %}{{ pet.enclosure.number }}{% else %}не указан{% endif %}
         </p>
 
-        <h3 class="info-title">Характер</h3>
+        <h2 class="info-title">Характер</h2>
         <p class="info-text">{{ pet.character|default:"Не указан" }}</p>
 
-        <h3 class="info-title">История спасения</h3>
+        <h2 class="info-title">История спасения</h2>
         <p class="info-text">{{ pet.rescue_story|default:"Не указана" }}</p>
 
         {% if vet_card %}
-            <h3 class="info-title">Ветеринарная карточка</h3>
+            <h2 class="info-title">Ветеринарная карточка</h2>
             <p class="info-text">{{ vet_card.vaccinations|default:"Прививки не указаны" }}</p>
         {% endif %}
 
@@ -53,10 +53,32 @@
         {% elif not user.is_authenticated %}
             <p class="notice-box">Чтобы подать анкету, <a href="{% url 'login' %}?next={{ request.path }}">войдите</a> или <a href="{% url 'register' %}">зарегистрируйтесь</a>.</p>
         {% elif can_apply %}
-            <form method="post" action="{% url 'apply_adoption' pet.pk %}" class="action-form">
+            <form method="post" action="{% url 'apply_adoption' pet.pk %}" class="action-form" id="application-form" novalidate data-validate>
                 {% csrf_token %}
-                <label class="form-label" for="id_message">Расскажите о себе</label>
-                <textarea name="message" id="id_message" rows="4" required class="form-textarea" placeholder="Почему вы хотите забрать питомца домой и какие условия можете создать?"></textarea>
+
+                {% if application_form.non_field_errors %}
+                    <div class="warning-text">{{ application_form.non_field_errors }}</div>
+                {% endif %}
+
+                <div class="form-group">
+                    <label class="form-label" for="{{ application_form.phone.id_for_label }}">{{ application_form.phone.label }}</label>
+                    {{ application_form.phone }}
+                    <p class="field-help">Например: +7 (900) 000-00-00</p>
+                    {% for error in application_form.phone.errors %}
+                        <p class="form-error">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="{{ application_form.message.id_for_label }}">{{ application_form.message.label }}</label>
+                    {{ application_form.message }}
+                    <p class="field-help">От 20 до 1000 символов.</p>
+                    <p class="char-counter" data-counter-for="{{ application_form.message.id_for_label }}"></p>
+                    {% for error in application_form.message.errors %}
+                        <p class="form-error">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
                 <button class="btn-primary" type="submit">Подать анкету на усыновление</button>
             </form>
         {% else %}
@@ -67,10 +89,22 @@
         {% if not user.is_authenticated %}
             <p class="notice-box">Записаться на прогулку можно после <a href="{% url 'login' %}?next={{ request.path }}">входа</a>.</p>
         {% elif can_walk %}
-            <form method="post" action="{% url 'book_walk' pet.pk %}" class="action-form">
+            <form method="post" action="{% url 'book_walk' pet.pk %}" class="action-form" id="walk-form" novalidate data-validate>
                 {% csrf_token %}
-                <label class="form-label" for="id_when">Дата и время прогулки</label>
-                <input type="datetime-local" name="when" id="id_when" required class="form-input">
+
+                {% if walk_form.non_field_errors %}
+                    <div class="warning-text">{{ walk_form.non_field_errors }}</div>
+                {% endif %}
+
+                <div class="form-group">
+                    <label class="form-label" for="{{ walk_form.when.id_for_label }}">{{ walk_form.when.label }}</label>
+                    {{ walk_form.when }}
+                    <p class="field-help">Выберите будущую дату и время.</p>
+                    {% for error in walk_form.when.errors %}
+                        <p class="form-error">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
                 <button class="btn-secondary" type="submit">Записаться на прогулку</button>
             </form>
         {% else %}

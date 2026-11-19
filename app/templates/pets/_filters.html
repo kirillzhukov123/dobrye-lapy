@@ -1,5 +1,5 @@
-<form method="get" action="{% url form_action %}" class="filter-form">
-    <input type="search" name="q" value="{{ q }}" placeholder="Кличка или порода" class="filter-input" aria-label="Кличка или порода">
+<form method="get" action="{% url form_action %}" class="filter-form" data-filter-form data-api="{% url 'api_pets' %}" role="search">
+    <input type="search" name="q" value="{{ q }}" placeholder="Кличка или порода" class="filter-input" aria-label="Кличка или порода" autocomplete="off">
 
     <select name="species" class="filter-select" aria-label="Вид животного">
         <option value="">Все виды</option>
@@ -22,5 +22,14 @@
         <option value="-age_months" {% if sort == '-age_months' %}selected{% endif %}>Сначала старше</option>
     </select>
 
+    <label class="filter-check">
+        <input type="checkbox" name="fav" value="1" data-fav-only>
+        <span>Только избранные</span>
+    </label>
+
     <button type="submit" class="filter-btn">Найти</button>
 </form>
+
+<div class="filter-status" data-filter-status aria-live="polite">
+    Найдено питомцев: <span data-results-count>{{ total }}</span>
+</div>

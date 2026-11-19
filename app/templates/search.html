@@ -6,16 +6,27 @@
         <h1 class="page-title">Результаты поиска</h1>
         <p class="page-subtitle">
             {% if q %}
-                По запросу «{{ q }}» найдено: {{ total }}.
+                По запросу «{{ q }}» найдено: <span data-results-count>{{ total }}</span>.
             {% else %}
-                Всего питомцев: {{ total }}.
+                Всего питомцев: <span data-results-count>{{ total }}</span>.
             {% endif %}
-            Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+            Страница <span data-current-page>{{ page_obj.number }}</span> из <span data-total-pages>{{ page_obj.paginator.num_pages }}</span>.
         </p>
     </div>
 </div>
 
 {% include 'pets/_filters.html' with form_action='search' %}
-{% include 'pets/_cards.html' %}
+
+<div class="results" data-results>
+    <div class="loading" data-loading hidden>
+        <span class="spinner" aria-hidden="true"></span>
+        <span>Загружаем питомцев...</span>
+    </div>
+    <div class="results-error" data-results-error hidden>
+        Не удалось загрузить данные. Показываем сохранённый список.
+    </div>
+    {% include 'pets/_cards.html' %}
+</div>
+
 {% include 'pets/_pagination.html' %}
 {% endblock %}

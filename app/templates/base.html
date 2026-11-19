@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Приют «Добрые лапы»{% endblock %}</title>
     <meta name="description" content="Городской приют для собак и кошек: карточки животных, история спасения, анкета на усыновление, гостевые прогулки и опекунство.">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=5">
+    <link rel="icon" href="{% static 'favicon.ico' %}" sizes="any">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=6">
 </head>
 <body>
 <header class="topbar">
@@ -24,6 +25,7 @@
         <a href="{% url 'search' %}" class="nav-link">Поиск</a>
         <a href="{% url 'guardianship' %}" class="nav-link">Опекунство</a>
         <a href="{% url 'about' %}" class="nav-link">О приюте</a>
+        <a href="{% url 'pet_list' %}?fav=1" class="nav-link nav-fav">Избранное <span class="fav-count" data-fav-count>0</span></a>
         {% if user.is_authenticated %}
             {% if user.is_staff %}
                 <a href="{% url 'application_list' %}" class="nav-link">Заявки</a>
@@ -63,6 +65,7 @@
         </div>
     </div>
 </footer>
-<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/main.js' %}?v=2"></script>
+<script src="{% static 'js/validation.js' %}?v=2"></script>
 </body>
 </html>

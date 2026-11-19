@@ -1,17 +1,24 @@
 {% load static %}
-<div class="pets-grid">
+<div class="pets-grid" data-pets-grid>
     {% for pet in pets %}
-        <a class="pet-card" href="{% url 'pet_detail' pet.pk %}">
-            {% if pet.photo %}
-                <img src="{{ pet.photo.url }}" alt="{{ pet.name }}" class="card-image" width="600" height="400" loading="lazy" decoding="async">
-            {% else %}
-                <img src="{% static 'images/placeholder.jpg' %}" alt="Фото питомца" class="card-image" width="600" height="400" loading="lazy" decoding="async">
-            {% endif %}
-            <h3 class="card-title">{{ pet.name }}</h3>
+        <article class="pet-card" data-pet-id="{{ pet.pk }}">
+            <a class="pet-card-link" href="{% url 'pet_detail' pet.pk %}">
+                {% if pet.photo %}
+                    <img src="{{ pet.photo.url }}" alt="{{ pet.name }}" class="card-image" width="600" height="400" loading="lazy" decoding="async">
+                {% else %}
+                    <img src="{% static 'images/placeholder.jpg' %}" alt="Фото питомца" class="card-image" width="600" height="400" loading="lazy" decoding="async">
+                {% endif %}
+                <h2 class="card-title">{{ pet.name }}</h2>
+            </a>
             <p class="card-desc">{{ pet.get_species_display }}, {{ pet.breed|default:"порода не указана" }}, {{ pet.age_display }}</p>
             <p class="card-meta">{% if pet.enclosure %}{{ pet.enclosure }}{% else %}Вольер не указан{% endif %}</p>
-            <span class="status-badge {{ pet.status }}">{{ pet.get_status_display }}</span>
-        </a>
+            <div class="card-footer">
+                <span class="status-badge {{ pet.status }}">{{ pet.get_status_display }}</span>
+                <button type="button" class="fav-btn" data-fav="{{ pet.pk }}" aria-pressed="false" aria-label="Добавить {{ pet.name }} в избранное">
+                    <span aria-hidden="true">&#9825;</span>
+                </button>
+            </div>
+        </article>
     {% empty %}
         <p class="empty-msg">{{ empty_text|default:"Ничего не найдено. Попробуйте изменить условия поиска." }}</p>
     {% endfor %}

@@ -89,6 +89,7 @@ class AdoptionApplication(models.Model):
         related_name='adoption_applications',
     )
     message = models.TextField('Сообщение', blank=True)
+    phone = models.CharField('Телефон', max_length=20, blank=True)
     status = models.CharField('Статус', max_length=20, choices=STATUS, default='new')
 
     class Meta:
