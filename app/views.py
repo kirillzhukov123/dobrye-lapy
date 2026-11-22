@@ -107,7 +107,7 @@ def api_pets(request):
     pets, filters = _filtered_pets(request)
 
     ids = request.GET.get('ids', '')
-    if ids:
+    if 'ids' in request.GET:
         id_list = [int(item) for item in ids.split(',') if item.strip().isdigit()]
         if isinstance(pets, list):
             pets = [pet for pet in pets if pet.pk in id_list]
