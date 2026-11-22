@@ -67,6 +67,18 @@ class PetForm(forms.ModelForm):
             raise forms.ValidationError('Возраст не должен превышать 360 месяцев.')
         return age
 
+    def clean_character(self):
+        character = self.cleaned_data.get('character', '')
+        if len(character) > 1000:
+            raise forms.ValidationError('Характер не должен быть длиннее 1000 символов.')
+        return character
+
+    def clean_rescue_story(self):
+        story = self.cleaned_data.get('rescue_story', '')
+        if len(story) > 2000:
+            raise forms.ValidationError('История спасения не должна быть длиннее 2000 символов.')
+        return story
+
 
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(
