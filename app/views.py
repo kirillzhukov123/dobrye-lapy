@@ -313,9 +313,12 @@ def reject_application(request, pk):
 @user_passes_test(_is_curator)
 def walk_done(request, pk):
     booking = get_object_or_404(WalkBooking, pk=pk)
-    booking.is_done = True
-    booking.save(update_fields=['is_done'])
-    messages.success(request, 'Прогулка отмечена как состоявшаяся.')
+    if booking.is_done:
+        messages.info(request, 'Прогулка уже отмечена как состоявшаяся.')
+    else:
+        booking.is_done = True
+        booking.save(update_fields=['is_done'])
+        messages.success(request, 'Прогулка отмечена как состоявшаяся.')
     return redirect('profile')
 
 
