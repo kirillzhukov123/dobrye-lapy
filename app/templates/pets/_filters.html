@@ -23,7 +23,7 @@
     </select>
 
     <label class="filter-check">
-        <input type="checkbox" name="fav" value="1" data-fav-only>
+        <input type="checkbox" name="fav" value="1" data-fav-only{% if request.GET.fav == '1' %} checked{% endif %}>
         <span>Только избранные</span>
     </label>
 
