@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load roles %}
 {% block title %}Каталог питомцев{% endblock %}
 {% block content %}
 <div class="page-head">
@@ -6,7 +7,7 @@
         <h1 class="page-title">Каталог питомцев</h1>
         <p class="page-subtitle">Найдено: <span data-results-count>{{ total }}</span>. Страница <span data-current-page>{{ page_obj.number }}</span> из <span data-total-pages>{{ page_obj.paginator.num_pages }}</span>.</p>
     </div>
-    {% if user.is_staff or user.is_superuser %}
+    {% if user.is_superuser or user|has_group:'Администратор' or user|has_group:'Куратор' %}
         <a href="{% url 'pet_create' %}" class="btn-primary">Добавить питомца</a>
     {% endif %}
 </div>

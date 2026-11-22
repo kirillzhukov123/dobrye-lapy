@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load roles %}
 {% block title %}{{ pet.name }}{% endblock %}
 {% block content %}
 <a href="{% url 'pet_list' %}" class="back-link">Назад в каталог</a>
@@ -37,7 +38,7 @@
             <p class="info-text">{{ vet_card.vaccinations|default:"Прививки не указаны" }}</p>
         {% endif %}
 
-        {% if user.is_staff or user.is_superuser %}
+        {% if user.is_superuser or user|has_group:'Администратор' or user|has_group:'Куратор' %}
             <div class="detail-actions">
                 <a href="{% url 'pet_edit' pet.pk %}" class="btn-secondary">Редактировать</a>
                 <a href="{% url 'pet_delete' pet.pk %}" class="btn-danger">Удалить</a>

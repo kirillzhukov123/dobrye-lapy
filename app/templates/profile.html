@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load roles %}
 {% block title %}Личный кабинет{% endblock %}
 {% block content %}
 <div class="page-head">
@@ -6,7 +7,7 @@
         <h1 class="page-title">Личный кабинет</h1>
         <p class="page-subtitle">{{ user.get_full_name|default:user.username }}{% if user.email %}, {{ user.email }}{% endif %}</p>
     </div>
-    {% if user.is_staff or user.is_superuser %}
+    {% if user.is_superuser or user|has_group:'Куратор' %}
         <a href="{% url 'application_list' %}" class="btn-primary">Все анкеты</a>
     {% endif %}
 </div>
@@ -49,7 +50,7 @@
                     <th>Питомец</th>
                     <th>Дата и время</th>
                     <th>Состояние</th>
-                    {% if user.is_staff or user.is_superuser %}<th></th>{% endif %}
+                    {% if user.is_superuser or user|has_group:'Куратор' %}<th></th>{% endif %}
                 </tr>
                 </thead>
                 <tbody>
@@ -58,7 +59,7 @@
                         <td><a href="{% url 'pet_detail' walk.pet.pk %}">{{ walk.pet.name }}</a></td>
                         <td>{{ walk.when|date:"d.m.Y H:i" }}</td>
                         <td>{% if walk.is_done %}Состоялась{% else %}Запланирована{% endif %}</td>
-                        {% if user.is_staff or user.is_superuser %}
+                        {% if user.is_superuser or user|has_group:'Куратор' %}
                             <td>
                                 {% if not walk.is_done %}
                                     <form method="post" action="{% url 'walk_done' walk.pk %}" class="inline-form">

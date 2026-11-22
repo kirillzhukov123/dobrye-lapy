@@ -251,7 +251,7 @@ def profile(request):
 
 def _is_curator(user):
     return user.is_authenticated and (
-        user.is_superuser or user.is_staff or user.groups.filter(name='Куратор').exists()
+        user.is_superuser or user.groups.filter(name='Куратор').exists()
     )
 
 
@@ -320,7 +320,11 @@ def walk_done(request, pk):
 
 
 def is_admin(user):
-    return user.is_authenticated and (user.is_staff or user.is_superuser)
+    return user.is_authenticated and (
+        user.is_superuser
+        or user.groups.filter(name='Администратор').exists()
+        or user.groups.filter(name='Куратор').exists()
+    )
 
 
 @user_passes_test(is_admin)
