@@ -55,6 +55,12 @@ class PetForm(forms.ModelForm):
         self.fields['species'].choices = [('', 'Выберите вид')] + Pet.SPECIES
         self.fields['enclosure'].empty_label = 'Не указан'
 
+    def clean_photo(self):
+        photo = self.cleaned_data.get('photo')
+        if photo and photo.size > 5 * 1024 * 1024:
+            raise forms.ValidationError('Размер файла не должен превышать 5 МБ.')
+        return photo
+
 
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(
