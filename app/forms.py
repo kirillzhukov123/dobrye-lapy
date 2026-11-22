@@ -61,6 +61,12 @@ class PetForm(forms.ModelForm):
             raise forms.ValidationError('Размер файла не должен превышать 5 МБ.')
         return photo
 
+    def clean_age_months(self):
+        age = self.cleaned_data['age_months']
+        if age > 360:
+            raise forms.ValidationError('Возраст не должен превышать 360 месяцев.')
+        return age
+
 
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(
