@@ -2,7 +2,6 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
-from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.templatetags.static import static
@@ -270,9 +269,12 @@ def application_list(request):
         else:
             applications = applications.none()
     if q:
-        applications = applications.filter(
-            Q(applicant__username__icontains=q) | Q(pet__name__icontains=q),
-        )
+        needle = q.casefold()
+        applications = [
+            application for application in applications
+            if needle in (application.applicant.username or '').casefold()
+            or needle in (application.pet.name or '').casefold()
+        ]
 
     return render(request, 'applications/list.html', {
         'applications': applications,
