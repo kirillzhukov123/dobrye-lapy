@@ -37,14 +37,19 @@ def _filtered_pets(request):
     sort = request.GET.get('sort', 'name')
 
     pets = Pet.objects.select_related('enclosure')
-    if q:
-        pets = pets.filter(Q(name__icontains=q) | Q(breed__icontains=q))
     if species:
         pets = pets.filter(species=species)
     if status:
         pets = pets.filter(status=status)
     if sort in ('name', '-name', 'age_months', '-age_months'):
         pets = pets.order_by(sort)
+    if q:
+        needle = q.casefold()
+        pets = [
+            pet for pet in pets
+            if needle in (pet.name or '').casefold()
+            or needle in (pet.breed or '').casefold()
+        ]
 
     return pets, {
         'q': q,
@@ -104,11 +109,14 @@ def api_pets(request):
     ids = request.GET.get('ids', '')
     if ids:
         id_list = [int(item) for item in ids.split(',') if item.strip().isdigit()]
-        pets = pets.filter(pk__in=id_list)
+        if isinstance(pets, list):
+            pets = [pet for pet in pets if pet.pk in id_list]
+        else:
+            pets = pets.filter(pk__in=id_list)
 
     if request.GET.get('all') == '1':
         items = pets
-        total = pets.count()
+        total = len(pets) if isinstance(pets, list) else pets.count()
         page_number = 1
         pages = 1
     else:
