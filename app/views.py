@@ -265,7 +265,10 @@ def application_list(request):
     if status:
         applications = applications.filter(status=status)
     if pet_id:
-        applications = applications.filter(pet_id=pet_id)
+        if pet_id.isdigit():
+            applications = applications.filter(pet_id=int(pet_id))
+        else:
+            applications = applications.none()
     if q:
         applications = applications.filter(
             Q(applicant__username__icontains=q) | Q(pet__name__icontains=q),
