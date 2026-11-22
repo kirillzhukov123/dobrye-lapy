@@ -358,11 +358,18 @@ def pet_delete(request, pk):
 def guardianship(request):
     form = GuardianshipForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
-        payment = form.save(commit=False)
-        payment.guardian = request.user
-        payment.save()
-        messages.success(request, 'Опекунский взнос зарегистрирован.')
-        return redirect('guardianship')
+        pet = form.cleaned_data['pet']
+        period = form.cleaned_data['period']
+        if GuardianshipPayment.objects.filter(
+            pet=pet, guardian=request.user, period=period,
+        ).exists():
+            form.add_error('period', 'Взнос за этот период уже зарегистрирован.')
+        else:
+            payment = form.save(commit=False)
+            payment.guardian = request.user
+            payment.save()
+            messages.success(request, 'Опекунский взнос зарегистрирован.')
+            return redirect('guardianship')
 
     payments = request.user.guardianship_payments.select_related('pet')
     return render(request, 'guardianship/list.html', {
