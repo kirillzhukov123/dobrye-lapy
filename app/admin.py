@@ -33,6 +33,15 @@ class PetAdmin(admin.ModelAdmin):
             return format_html('<img src="{}" style="max-height: 90px; border-radius: 6px;" />', obj.photo.url)
         return '—'
 
+    def save_model(self, request, obj, form, change):
+        if change and obj.status != 'home' and TransferContract.objects.filter(pet=obj).exists():
+            messages.error(
+                request,
+                'Нельзя снять статус «Дома»: у питомца есть договор передачи.',
+            )
+            return
+        super().save_model(request, obj, form, change)
+
 
 @admin.register(Enclosure)
 class EnclosureAdmin(admin.ModelAdmin):
