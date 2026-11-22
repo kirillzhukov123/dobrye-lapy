@@ -14,7 +14,7 @@
             <p class="card-meta">{% if pet.enclosure %}{{ pet.enclosure }}{% else %}Вольер не указан{% endif %}</p>
             <div class="card-footer">
                 <span class="status-badge {{ pet.status }}">{{ pet.get_status_display }}</span>
-                <button type="button" class="fav-btn" data-fav="{{ pet.pk }}" aria-pressed="false" aria-label="Добавить {{ pet.name }} в избранное">
+                <button type="button" class="fav-btn" data-fav="{{ pet.pk }}" data-name="{{ pet.name }}" aria-pressed="false" aria-label="Добавить {{ pet.name }} в избранное">
                     <span aria-hidden="true">&#9825;</span>
                 </button>
             </div>
