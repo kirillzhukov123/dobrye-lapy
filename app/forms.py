@@ -232,6 +232,8 @@ class GuardianshipForm(forms.ModelForm):
         amount = self.cleaned_data['amount']
         if amount < 100:
             raise forms.ValidationError('Минимальная сумма взноса - 100 ₽.')
+        if amount > 100000:
+            raise forms.ValidationError('Максимальная сумма взноса - 100 000 ₽.')
         return amount
 
     def clean_period(self):
