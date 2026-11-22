@@ -202,12 +202,16 @@ def book_walk(request, pk):
 
     form = WalkForm(request.POST)
     if form.is_valid():
-        booking = form.save(commit=False)
-        booking.pet = pet
-        booking.volunteer = request.user
-        booking.save()
-        messages.success(request, 'Запись на прогулку создана.')
-        return redirect('pet_detail', pk=pet.pk)
+        when = form.cleaned_data['when']
+        if WalkBooking.objects.filter(pet=pet, when=when).exists():
+            form.add_error('when', 'На это время уже есть запись. Выберите другое.')
+        else:
+            booking = form.save(commit=False)
+            booking.pet = pet
+            booking.volunteer = request.user
+            booking.save()
+            messages.success(request, 'Запись на прогулку создана.')
+            return redirect('pet_detail', pk=pet.pk)
 
     messages.error(request, 'Проверьте дату прогулки: исправьте отмеченные поля.')
     context = _detail_context(request, pet, walk_form=form, open_form='walk')
